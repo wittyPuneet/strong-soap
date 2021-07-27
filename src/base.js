@@ -86,7 +86,7 @@ class Base extends EventEmitter {
     this.wsdl.options.forceSoapVersion = options.forceSoapVersion;
   }
 
-  static createSOAPEnvelope(prefix, nsURI) {
+  static createSOAPEnvelope(prefix, nsURI, envelopeAttributes, headerAttributes) {
     prefix = prefix || 'soap';
     nsURI = nsURI || 'http://schemas.xmlsoap.org/soap/envelope/';
     var doc = xmlBuilder.create(prefix + ':Envelope',
@@ -94,8 +94,8 @@ class Base extends EventEmitter {
     doc.attribute('xmlns:' + prefix, nsURI);
     let header = doc.element(prefix + ':Header');
     let body = doc.element(prefix + ':Body');
-    envelopeAttr.forEach(({ns,nsUri})=>doc.attribute(ns,nsUri))
-    headerAttr.forEach(({ns,nsUri})=>header.attribute(ns,nsUri))
+    envelopeAttributes.forEach(({ns,nsUri})=>doc.attribute(ns,nsUri));
+    headerAttributes.forEach(({ns,nsUri})=>header.attribute(ns,nsUri));
     return {
       body: body,
       header: header,
